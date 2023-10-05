@@ -1,6 +1,8 @@
 # to run 'pip install PySide6' is required
+from msilib.schema import SelfReg
 import sys
 import random
+from typing import Self
 from PySide6.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QMenu
 from PySide6.QtGui import QPainter, QPen, QBrush, QFont
 from PySide6.QtCore import Qt, QTimer
@@ -11,6 +13,8 @@ GRID_WIDTH = 20
 GRID_HEIGHT = 15
 
 class SnakeGame(QGraphicsView):
+    
+    
     def __init__(self):
         super().__init__()
 
@@ -36,9 +40,14 @@ class SnakeGame(QGraphicsView):
                 self.direction = key
             elif key == Qt.Key_Down and self.direction != Qt.Key_Up:
                 self.direction = key
+                
+                
+
+        
     
     def update_game(self):
         head_x, head_y = self.snake[0]
+        
 
         if self.direction == Qt.Key_Left:
             new_head = (head_x - 1, head_y)
@@ -67,6 +76,15 @@ class SnakeGame(QGraphicsView):
         self.snake = [(5, 5), (5, 6), (5, 7)]
 
         self.timer.start(300)
+        
+# Game over text
+game_over_text = SelfReg.scene().addText("Game Over", QFont("Arial", 24))
+text_width = game_over_text.boundingRect().width()
+text_x = (Self.width() - text_width) / 2
+game_over_text.setPos(text_x, GRID_HEIGHT * CELL_SIZE / 2)
+
+        
+
 
 def main():
     app = QApplication(sys.argv)
